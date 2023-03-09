@@ -1,0 +1,15 @@
+﻿<div class="vstick-container" style=@ContainerStyle>
+    <div class="vstick">
+        <div class="vstick-stick"></div>
+    </div>
+    <div class="memo">
+        <span id="rz-vstick-value"></span>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int SizePx { get; set; }
+
+    private string ContainerStyle => $"width: {SizePx}px; height: {SizePx}px;";
+}
