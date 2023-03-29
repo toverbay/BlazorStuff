@@ -1,0 +1,71 @@
+﻿@page "/materials"
+
+@using System.IO
+@using BlazorStuff.Shared.Materials
+@using REAPI.Materials
+@using System.Text.Json;
+
+@if (_settings is null && _jsonFile?.Exists == true)
+{
+    <h5>JSON File</h5>
+    <button @onclick=OnLoadButtonClick><strong>@_jsonFile.Name</strong></button>
+}
+else if (_jsonFile?.Exists != true)
+{
+    <em>Doesn't exist</em>
+}
+
+@if (_error is string error)
+{
+    <h6>Error</h6>
+    <span>@error</span>
+}
+
+@if (_settings is SourceSettingsJson[] sourceSettings)
+{
+    <SourceSettingsEditor Sources=@sourceSettings/>
+}
+
+@code {
+    private FileInfo? _jsonFile;
+    private SourceSettingsJson[]? _settings;
+    private string? _error;
+
+    protected override Task OnInitializedAsync()
+    {
+        var pathToJsonFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\data\\materialsFactory.json");
+        _jsonFile = new FileInfo(pathToJsonFile);
+
+        return Task.CompletedTask;
+    }
+
+    void OnLoadButtonClick(MouseEventArgs e)
+    {
+        if (_jsonFile is not FileInfo jsonFile)
+        {
+            _error = "JSON file not found";
+            return;
+        }
+        else
+        {
+            _error = default;
+        }
+
+        try
+        {
+            using var stream = jsonFile.OpenRead();
+            var jsonSettings = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                AllowTrailingCommas = true,
+                NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.Strict,
+            };
+            _settings = JsonSerializer.Deserialize<SourceSettingsJson[]>(stream, jsonSettings);
+        }
+        catch(Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+}

@@ -1,0 +1,37 @@
+﻿@using REAPI.Materials;
+
+<div>
+    <select @onchange=SourceSelected size=@SelectSize>
+        @foreach (var sourceName in Sources.GetSourceNames())
+        {
+            <option value=@sourceName>@sourceName</option>
+        }
+    </select>
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<SourceSettingsJson> Sources { get; set; } = Enumerable.Empty<SourceSettingsJson>();
+
+    [Parameter]
+    public SourceSettingsJson? SelectedSource { get; set; }
+
+    [Parameter]
+    public EventCallback<SourceSettingsJson?> SelectedSourceChanged { get; set; }
+
+    int SelectSize => Math.Min(8, Sources.Count() + 1);
+
+    async Task SourceSelected(ChangeEventArgs e)
+    {
+        if (e?.Value is string selectedSourceName)
+        {
+            SelectedSource = Sources.GetByName(selectedSourceName);
+        }
+        else
+        {
+            SelectedSource = default;
+        }
+
+        await SelectedSourceChanged.InvokeAsync(SelectedSource);
+    }
+}

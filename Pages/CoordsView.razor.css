@@ -1,0 +1,24 @@
+﻿.row {
+    width: 28em;
+}
+
+    .row > span, row > input {
+        display: inline-flex;
+        width: 4em;
+    }
+
+    .row:hover {
+        outline: 1px solid #cfcdd9;
+    }
+
+    .row.editing:hover {
+        outline: none;
+    }
+
+    .row > span:nth-child(2n):hover {
+        background: #8f8e96;
+    }
+
+    .row.editing > span:nth-child(2n):hover {
+        background: transparent;
+    }

@@ -1,0 +1,21 @@
+﻿@using REAPI.Materials
+@using System.Linq
+
+<h3>Laser Source Settings Editor</h3>
+
+<SourceSelector Sources=@Sources @bind-SelectedSource=SelectedSource/>
+
+@if (SelectedSource is SourceSettingsJson source)
+{
+    if (source.Materials is MaterialsJson materials)
+    {
+        <MaterialsEditor Materials=@materials/>
+    }
+}
+
+@code {
+    [Parameter]
+    public SourceSettingsJson[] Sources { get; set; } = new SourceSettingsJson[] { };
+
+    SourceSettingsJson? SelectedSource { get; set; }
+}

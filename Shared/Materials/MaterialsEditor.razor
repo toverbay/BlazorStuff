@@ -1,0 +1,19 @@
+﻿@using REAPI.Materials;
+<h4>Edit Material</h4>
+
+<MaterialSelector Materials=@Materials @bind-SelectedMaterialName=SelectedMaterialName />
+
+@if (SelectedMaterialName is string materialName)
+{
+    <div style="display: flex">
+        <MaterialEditor Material=@Materials.GetVectorMaterialByName(materialName) Target="Vector" />
+        <MaterialEditor Material=@Materials.GetRasterMaterialByName(materialName) Target="Raster" />
+    </div>
+}
+
+@code {
+    [Parameter]
+    public MaterialsJson Materials { get; set; } = new();
+
+    public string? SelectedMaterialName { get; set; }
+}

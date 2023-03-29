@@ -1,0 +1,12 @@
+﻿select {
+    appearance: menulist;
+    padding: 6px;
+    border: none;
+    outline: none;
+    overflow: auto
+}
+
+    select > option {
+        appearance: menulist-button;
+        margin: 4px 0;
+    }

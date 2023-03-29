@@ -1,6 +1,39 @@
 ﻿@page "/coords-view"
 
-<h3>CoordsView</h3>
+<h3>Editable Coordinates</h3>
+<input type="checkbox" @bind=_inEditMode />
+<div class="container-xs text-start">
+    <div class="row justify-content-start editing">
+        <span>X:</span>
+        <span>
+            @if (@_inEditMode) {
+                <input type="number" id="txtX" placeholder=@_x />
+            } else {
+                <label>@_x</label>
+            }
+        </span>
+        <span>Y:</span>
+        <span>
+            @if (@_inEditMode) {
+                <input type="number" id="txtY" placeholder=@_y />
+            } else {
+                <label>@_y</label>
+            }
+        </span>
+        <span>Z:</span>
+        <span>
+            @if (@_inEditMode) {
+                <input type="number" id="txtZ" placeholder=@_z />
+            } else {
+                <label>@_z</label>
+            }
+        </span>
+    </div>
+</div>
 
 @code {
+    double _x = 12.5;
+    double _y = 41.77;
+    double _z = 10.25;
+    bool _inEditMode = true;
 }

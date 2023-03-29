@@ -1,0 +1,39 @@
+﻿@using REAPI.Materials;
+
+<div>
+    <select @onchange=MaterialSelected size=@SelectSize>
+        @foreach (var materialName in AllMaterialNames)
+        {
+            <option value=@materialName>@materialName</option>
+        }
+    </select>
+</div>
+
+@code {
+    [Parameter]
+    public MaterialsJson Materials { get; set; } = new();
+
+    [Parameter]
+    public string? SelectedMaterialName { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> SelectedMaterialNameChanged { get; set; }
+
+    IEnumerable<string> AllMaterialNames => Materials.GetMaterialNames();
+
+    int SelectSize => Math.Min(20, AllMaterialNames.Count() + 1);
+
+    async Task MaterialSelected(ChangeEventArgs e)
+    {
+        if (e.Value is string s)
+        {
+            SelectedMaterialName = s;
+        }
+        else
+        {
+            SelectedMaterialName = default;
+        }
+
+        await SelectedMaterialNameChanged.InvokeAsync(SelectedMaterialName);
+    }
+}

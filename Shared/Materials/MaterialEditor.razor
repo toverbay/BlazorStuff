@@ -1,0 +1,37 @@
+﻿@using REAPI.Materials;
+
+<div style="margin-right: 2em; margin-top: 1em;">
+<h5>@Target Settings</h5>
+
+    <h6>ID: @IdLabel</h6>
+    <label><strong>Properties</strong></label>
+    @if (Material.Properties?.Any() == true)
+    {
+        <EditForm Model="Material" OnSubmit="SaveChanges">
+            @foreach (var kvp in Material.Properties)
+            {
+                string inputId = $"txt-{Target}-{kvp.Key}";
+                <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                    <label for=@inputId>@kvp.Key: </label>
+                    <input type="text" @onchange=@(t => Material.Properties[kvp.Key] = t.Value ?? "") id=@inputId value=@kvp.Value style="width: 5em; text-align: end" />
+                </div>
+            }
+            <button style="margin-top: 1em; width: 100%;" type="submit">Save Changes</button>
+        </EditForm>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public MaterialJson Material { get; set; } = new();
+
+    [Parameter]
+    public string Target { get; set; } = "";
+
+    string IdLabel => Material.Id?.ToString() ?? "[null]";
+
+    void SaveChanges()
+    {
+
+    }
+}
